@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -7,11 +7,7 @@ import pool from './lib/db.js'; // Import the database connection
 import { createPropertiesTable } from './sql/queries.js';
 import { fetchData } from './main.js';
 import { sendMessageToDiscord } from './lib/discordBot.js';
-import Parse from 'parse/node.js';
-
-// Initialize with your Back4app keys
-Parse.initialize("63L46OGDNRq8XLXn623qinQ3mLug9WWFuaLCeBYh", "JnLFC5BmualgArA6USOGQxPIq6Tl5KH2s31MBqon");  // Replace with your App ID and JS Key
-Parse.serverURL = 'https://parseapi.back4app.com';
+dotenv.config();
 
 const app = express();
 
@@ -27,20 +23,6 @@ app.use(morgan('dev'));
 // Basic route
 app.get('/', (req, res) => {
     res.send('Server is running');
-    const testConnection = async () => {
-      const Person = new Parse.Object("Person");
-      Person.set("name", "Jon Snow");
-      Person.set("age", 30);
-    
-      try {
-        await Person.save();
-        console.log("Successfully connected to Back4app!");
-      } catch (error) {
-        console.error("Connection error:", error.message);
-      }
-    };
-    
-    testConnection();
 });
 app.get('/properties', async (req, res) => {
     await pool.query(createPropertiesTable)
