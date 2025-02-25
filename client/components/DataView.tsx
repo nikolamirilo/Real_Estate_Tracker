@@ -16,7 +16,7 @@ export default function DataView({data}:{data:Offer[]}) {
   return (
     <>
     <Sidebar item={selected} setFilteredItems={setFilteredItems} filteredItems={filteredItems} />
-    <div className="w-[74%] fixed right-0 top-0">
+    <div className="w-[68%] fixed right-0 top-0">
       <div className="flex border-b z-50">
         {tabs.map((tab) => (
           <button

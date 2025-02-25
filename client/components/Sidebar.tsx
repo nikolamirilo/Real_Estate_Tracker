@@ -7,9 +7,9 @@ export const dynamic = "force-dynamic";
 
 const Sidebar = ({ item, setFilteredItems, filteredItems }: { item: Offer, setFilteredItems:any, filteredItems:Offer[] }) => {
   return (
-    <div className="z-50 h-screen fixed top-0 left-0 flex flex-col w-[25%] min-w-[200px] bg-clip-border rounded-xl bg-white text-gray-700 max-w-[30rem] p-4 shadow-xl shadow-blue-gray-900/5">
-      <div className="flex flex-col overflow-y-auto gap-1 min-w-[200px] p-2 font-sans text-base font-normal text-gray-700">
-        <div className={`p-4 border-2 rounded w-full gap-1 flex flex-col`}>
+    <div className="z-50 h-screen overflow-y-auto fixed top-0 left-0 flex flex-col w-[30%] min-w-[200px] bg-clip-border rounded-xl bg-gray-100 text-gray-700 max-w-[30rem] p-2 shadow-xl shadow-blue-gray-900/5">
+      <div className="flex flex-col gap-1 min-w-[200px] font-sans text-base font-normal text-gray-700">
+        <div className={`p-2 border-2 rounded w-full gap-1 flex flex-col shadow-lg bg-white`}>
           <div className="w-full h-56 relative">
             <Image
               src={item.image}
@@ -43,9 +43,10 @@ const Sidebar = ({ item, setFilteredItems, filteredItems }: { item: Offer, setFi
               maximumFractionDigits: 0,
             }).format(Number(item.price_per_m2))}
           </p>
+          {item.is_match == false ? <span className='text-sm text-blue-500'>PS: Pin na mapi ne pokazuje tačnu lokaciju jer je došlo do greške pri obradi.</span> : null}
         </div>
       </div>
-      <div className="mb-4">
+      <div className="mb-4 mt-1">
         <Filter onFilter={setFilteredItems} data={filteredItems} />
       </div>
     </div>

@@ -3,8 +3,6 @@
 import React, { useEffect, useState } from "react";
 import { Map, Marker, Overlay } from "pigeon-maps";
 import dynamic from "next/dynamic";
-import { revalidatePath } from "next/cache";
-import { revalidateData } from "@/helpers/server";
 
 export type Offer = {
   details: string;

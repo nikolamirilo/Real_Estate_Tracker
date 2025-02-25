@@ -13,13 +13,13 @@ const ListView = ({ data }: { data: Offer[] }) => {
                             key={i}
                             className={`p-2 flex-col md:flex-row relative flex h-[180px] overflow-clip rounded bg-white shadow-smooth shadow-xl`}
                         >
-                            <div className="w-full md:w-1/3 h-full relative">
+                            <div className="w-full md:w-1/2 h-full relative">
                                 <Image
                                     src={item.image}
                                     alt={item.street}
                                     layout="fill"
                                     objectFit="cover"
-                                    className="rounded-lg"
+                                    className="rounded-md"
                                 />
                             </div>
                             <div className="flex flex-col w-full md:w-2/3 md:pl-4 mt-4 md:mt-0">
