@@ -18,9 +18,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
-
-
-// Basic route
 app.get('/', (req, res) => {
     res.send('Server is running');
 });
@@ -29,6 +26,7 @@ app.get('/properties', async (req, res) => {
     const { rows } = await pool.query('SELECT * FROM properties');
     res.send(rows);
 });
+
 app.get('/properties/refresh-data', async (req, res) => {
   try {
       res.write(JSON.stringify({ message: "Started with scraping data and inserting into DB" }) + '\n');
