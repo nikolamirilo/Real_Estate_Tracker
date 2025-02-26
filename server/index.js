@@ -30,44 +30,66 @@ app.get('/properties', async (req, res) => {
     res.send(rows);
 });
 app.get('/properties/refresh-data', async (req, res) => {
-    try {
+  try {
       res.write(JSON.stringify({ message: "Started with scraping data and inserting into DB" }) + '\n');
-      await pool.query(createPropertiesTable)
+      await pool.query(createPropertiesTable);
       const data = await fetchData();
+
       for (let i = 0; i < data.length; i++) {
-        const query = `
-          INSERT INTO properties (details, street, image, city_area, price, price_per_m2, is_match, lat, lon)
-          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-        `;
-        const values = [
-          data[i].details,
-          data[i].street,
-          data[i].image,
-          data[i].cityArea,
-          data[i].price,
-          data[i].pricePerM2,
-          data[i].isMatch,
-          data[i].lat,
-          data[i].lon,
-        ];
-  
-        try {
-          await pool.query(query, values);
-          await sendMessageToDiscord(data[i])
-          console.log(`Property ${i + 1} inserted successfully.`);
-        } catch (err) {
-          console.error(`Error inserting property ${i + 1}:`, err);
-        }
+          const checkQuery = `
+              SELECT * FROM properties 
+              WHERE image = $1 
+              AND street = $2 
+              AND city_area = $3 
+              AND details = $4
+          `;
+          const checkValues = [
+              data[i].image,
+              data[i].street,
+              data[i].cityArea,
+              data[i].details,
+          ];
+
+          const existingRecord = await pool.query(checkQuery, checkValues);
+
+          if (existingRecord.rows.length > 0) {
+              console.log(`Property ${i + 1} already exists in the database. Skipping insertion.`);
+              continue; // Skip this iteration if the record already exists
+          }
+
+          const insertQuery = `
+              INSERT INTO properties (details, street, image, city_area, price, price_per_m2, is_match, lat, lon)
+              VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+          `;
+          const insertValues = [
+              data[i].details,
+              data[i].street,
+              data[i].image,
+              data[i].cityArea,
+              data[i].price,
+              data[i].pricePerM2,
+              data[i].isMatch,
+              data[i].lat,
+              data[i].lon,
+          ];
+
+          try {
+              await pool.query(insertQuery, insertValues);
+              await sendMessageToDiscord(data[i]);
+              console.log(`Property ${i + 1} inserted successfully.`);
+          } catch (err) {
+              console.error(`Error inserting property ${i + 1}:`, err);
+          }
       }
-  
+
       // Notify the client that the process has finished
       res.write(JSON.stringify({ message: "Finished with adding data" }) + '\n');
       res.end(); // End the response
-    } catch (err) {
+  } catch (err) {
       console.error('Error in /properties/refresh-data:', err);
       res.status(500).json({ message: "Internal Server Error", error: err.message });
-    }
-  });
+  }
+});
 
 
 app.use((req, res, next) => {
