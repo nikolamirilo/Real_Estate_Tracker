@@ -28,7 +28,7 @@ export async function fetchOffers() {
                 results.push({
                     details: details.split('\n')[0].trim(),
                     street,
-                    link: `https://www.4zida.rs/${link}`,
+                    link: `https://www.4zida.rs${link}`,
                     cityArea,
                     price:parseInt(price.replace(/[^0-9]/g, ''), 10),
                     pricePerM2:parseInt(pricePerM2.replace(/[^0-9]/g, ''), 10),

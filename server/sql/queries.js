@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS properties (
     is_match BOOLEAN NOT NULL DEFAULT FALSE, -- Indicates if the location is a match
     lat NUMERIC NOT NULL, -- Latitude (e.g., 44.747758209749264)
     lon NUMERIC NOT NULL, -- Longitude (e.g., 20.25902768093329)
+    link TEXT NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP, -- Timestamp of record creation
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP -- Timestamp of last update
 );

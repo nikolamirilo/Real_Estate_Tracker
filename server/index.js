@@ -38,16 +38,10 @@ app.get('/properties/refresh-data', async (req, res) => {
       for (let i = 0; i < data.length; i++) {
           const checkQuery = `
               SELECT * FROM properties 
-              WHERE image = $1 
-              AND street = $2 
-              AND city_area = $3 
-              AND details = $4
+              WHERE link = $1 
           `;
           const checkValues = [
-              data[i].image,
-              data[i].street,
-              data[i].cityArea,
-              data[i].details,
+              data[i].link,
           ];
 
           const existingRecord = await pool.query(checkQuery, checkValues);
@@ -58,8 +52,8 @@ app.get('/properties/refresh-data', async (req, res) => {
           }
 
           const insertQuery = `
-              INSERT INTO properties (details, street, image, city_area, price, price_per_m2, is_match, lat, lon)
-              VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+              INSERT INTO properties (details, street, image, city_area, price, price_per_m2, is_match, link, lat, lon)
+              VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
           `;
           const insertValues = [
               data[i].details,
@@ -69,6 +63,7 @@ app.get('/properties/refresh-data', async (req, res) => {
               data[i].price,
               data[i].pricePerM2,
               data[i].isMatch,
+              data[i].link,
               data[i].lat,
               data[i].lon,
           ];
