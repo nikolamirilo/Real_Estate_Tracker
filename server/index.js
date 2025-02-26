@@ -81,13 +81,10 @@ app.get('/properties/refresh-data', async (req, res) => {
               console.error(`Error inserting property ${i + 1}:`, err);
           }
       }
-
-      // Notify the client that the process has finished
-      res.write(JSON.stringify({ message: "Finished with adding data" }) + '\n');
-      res.end(); // End the response
+      res.status(200).json(JSON.stringify({ message: "Finished with adding data", success: true }) + '\n');
   } catch (err) {
       console.error('Error in /properties/refresh-data:', err);
-      res.status(500).json({ message: "Internal Server Error", error: err.message });
+      res.status(500).json({ message: "Internal Server Error", error: err.message, success: false });
   }
 });
 
