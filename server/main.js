@@ -2,7 +2,7 @@ import axios from "axios";
 import { scrape4zidaOffers } from "./web_scrapers/4zidaScraper.js";
 import { findBestMatch, getRandomOffset } from "./utils/index.js";
 import { scrapeHaloOffers } from "./web_scrapers/haloScraper.js";
-import fs from "fs";
+//import fs from "fs";
 
 export async function fetchData() {
   const offersHalo = await scrapeHaloOffers();
@@ -67,7 +67,7 @@ export async function fetchData() {
 
   // Save results to a file
   try {
-    fs.writeFileSync("../client/data.json", JSON.stringify(results, null, 2));
+    //fs.writeFileSync("../client/data.json", JSON.stringify(results, null, 2));
     console.log("Data saved.");
   } catch (error) {
     console.error('Error saving data to file:', error.message);
