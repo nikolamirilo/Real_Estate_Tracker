@@ -13,6 +13,7 @@ const Sidebar = ({ item, setFilteredItems, filteredItems }: { item: Offer, setFi
           <div className="w-full h-56 relative">
             <Image
               src={item.image}
+              unoptimized
               alt={item.street}
               layout="fill"
               objectFit="cover" 
