@@ -17,6 +17,7 @@ const ListView = ({ data }: { data: Offer[] }) => {
                                 <Image
                                     src={item.image}
                                     alt={item.street}
+                                    unoptimized
                                     layout="fill"
                                     objectFit="cover"
                                     className="rounded-md"
