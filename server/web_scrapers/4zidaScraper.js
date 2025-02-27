@@ -2,7 +2,8 @@ import axios from "axios";
 import * as cheerio from 'cheerio';
 
 
-export async function fetchOffers() {
+
+export async function scrape4zidaOffers() {
     try {
         const results = [];
         for(let i = 1; i < 20; i++){
@@ -36,12 +37,8 @@ export async function fetchOffers() {
                 });
             });
         }
-        console.log(results)
         return results;
     } catch (error) {
         console.error('Error scraping data:', error);
     }
 }
-
-
-fetchOffers()

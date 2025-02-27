@@ -96,3 +96,16 @@ function latinToCyrillic(text) {
             match => mapping[match])
         .replace(/[A-Za-z]/g, match => mapping[match] || match);
 }
+
+
+const radius = 2000; // 2km in meters
+const earthRadius = 6371000; // Earth's radius in meters
+
+export function getRandomOffset() {
+  const randomDist = Math.random() * radius; // Random distance within 2km
+  const randomAngle = Math.random() * 2 * Math.PI; // Random direction
+  const deltaLat = (randomDist * Math.cos(randomAngle)) / earthRadius;
+  const deltaLon = (randomDist * Math.sin(randomAngle)) / (earthRadius * Math.cos(44.8133048 * Math.PI / 180));
+
+  return { deltaLat: deltaLat * (180 / Math.PI), deltaLon: deltaLon * (180 / Math.PI) };
+}
