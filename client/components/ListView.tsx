@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Offer } from './MapView';
 import Image from 'next/image';
 
 const ListView = ({ data }: { data: Offer[] }) => {
+    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
     return (
         <div className="flex flex-col w-full bg-clip-border rounded-xl bg-white text-gray-700 p-4 shadow-blue-gray-900/5 overflow-y-auto max-h-[80vh]">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-2 font-sans text-base font-normal text-gray-700 overflow-y-auto">
@@ -11,8 +13,26 @@ const ListView = ({ data }: { data: Offer[] }) => {
                     .map((item, i) => (
                         <div
                             key={i}
-                            className={`p-2 flex-col md:flex-row relative flex h-[180px] overflow-clip rounded bg-white shadow-smooth shadow-xl`}
+                            onMouseEnter={() => setHoveredIndex(i)}
+                            onMouseLeave={() => setHoveredIndex(null)}
+                            className={`p-2 cursor-pointer flex-col md:flex-row relative flex h-[180px] overflow-clip rounded bg-white shadow-smooth shadow-xl`}
                         >
+                            {/* Overlay covering the entire card */}
+                            {hoveredIndex === i && (
+                                <div className="absolute inset-0 z-10 transition  ease-in-out delay-150 duration-300 bg-black bg-opacity-50 flex items-center justify-center rounded-md">
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation(); // Prevent the parent div's onClick from firing
+                                            window.open(item.link, "_blank");
+                                        }}
+                                        className="bg-white text-black px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 hover:scale-[1.02] transition ease-in-out"
+                                    >
+                                        Pogledaj ponudu
+                                    </button>
+                                </div>
+                            )}
+
+                            {/* Image */}
                             <div className="w-full md:w-1/2 h-full relative">
                                 <Image
                                     src={item.image}
@@ -23,6 +43,8 @@ const ListView = ({ data }: { data: Offer[] }) => {
                                     className="rounded-md"
                                 />
                             </div>
+
+                            {/* Content */}
                             <div className="flex flex-col w-full md:w-2/3 md:pl-4 mt-4 md:mt-0">
                                 <h3 className="font-semibold text-lg">{item.street}</h3>
                                 <p className="text-gray-700 text-sm">{item.city_area}</p>

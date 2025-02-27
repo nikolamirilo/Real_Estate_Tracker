@@ -12,6 +12,7 @@ export type Offer = {
   price: string;
   price_per_m2: string;
   is_match: boolean;
+  link: string;
   lat: number;
   lon: number;
 };
