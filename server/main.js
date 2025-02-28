@@ -1,75 +1,64 @@
 import axios from "axios";
 import { scrape4zidaOffers } from "./web_scrapers/4zidaScraper.js";
 import { findBestMatch, getRandomOffset } from "./utils/index.js";
-//import fs from "fs";
-
+import pool from "./lib/db.js";
 
 export async function fetchData() {
-  const offers4zida = await scrape4zidaOffers();
+  try {
+    const offers4zida = await scrape4zidaOffers();
 
-  if (offers4zida.length === 0) {
-    console.log("No offers to process.");
-    return [];
-  }
+    if (offers4zida.length === 0) {
+      console.log("No offers to process.");
+      return [];
+    }
+    const results = [];
+    const { rows } = await pool.query('SELECT * FROM properties');
+    const existingRecords = rows;
 
-  const results = [];
+    for (let i = 0; i < offers4zida.length; i++) {
+      try {
+        const item = offers4zida[i];
+        if (item.street && item.cityArea && !existingRecords.some(singleItem => singleItem.image === item.image)) {
+          const encodedAddress = encodeURIComponent(item.street || '');
+          const url = `https://nominatim.openstreetmap.org/search.php?street=${encodedAddress}&city=Beograd&country=Serbia&state=Serbia&format=jsonv2`;
 
-  for (let i = 0; i < offers4zida.length; i++) {
-    try {
-      const item = offers4zida[i];
-      console.log(item);
+          console.log(`Fetching: ${url}`);
+          const res = await axios.get(url, {
+            headers: { 'User-Agent': 'YourAppName (contact@email.com)' }
+          });
 
-      if ((item.street || item.cityArea) && item.cityArea) {
-        const encodedAddress = encodeURIComponent(item.street || '');
-        const url = `https://nominatim.openstreetmap.org/search.php?street=${encodedAddress}&city=Beograd&country=Serbia&state=Serbia&format=jsonv2`;
+          if (res.data?.length > 0) {
+            const trimmedCityArea = item.cityArea.split(",")[0].trim();
+            const bestMatch = findBestMatch(res.data, trimmedCityArea);
 
-        console.log(`Fetching: ${url}`);
-        const res = await axios.get(url, {
-          headers: { 'User-Agent': 'YourAppName (contact@email.com)' }
-        });
-
-        if (res.data?.length > 0) {
-          const trimmedCityArea = item.cityArea.split(",")[0].trim();
-          console.log(trimmedCityArea);
-          const bestMatch = findBestMatch(res.data, trimmedCityArea);
-          if (bestMatch?.lat && bestMatch?.lon) {
+            if (bestMatch?.lat && bestMatch?.lon) {
+              results.push({
+                ...item,
+                lat: bestMatch.lat,
+                lon: bestMatch.lon,
+                isMatch: bestMatch.isMatch
+              });
+            } else {
+              console.log(`No valid match for: ${item.street}, ${item.cityArea}`);
+            }
+          } else {
+            const randomOffset = getRandomOffset();
             results.push({
               ...item,
-              lat: bestMatch.lat,
-              lon: bestMatch.lon,
-              isMatch: bestMatch.isMatch
+              lat: 44.8133048 + randomOffset.deltaLat,
+              lon: 20.4183382 + randomOffset.deltaLon,
+              isMatch: false
             });
-          } else {
-            console.log(`No valid match for: ${item.street}, ${item.cityArea}`);
+            console.log(`No results for: ${item.street}`);
           }
-        } else {
-          results.push({
-            ...item,
-            lat: 44.8133048 + getRandomOffset().deltaLat,
-            lon: 20.4183382 + getRandomOffset().deltaLon,
-            isMatch: false
-          });
-          console.log(`No results for: ${item.street}`);
         }
-      } else {
+      } catch (error) {
+        console.error('Error processing item:', error.message);
       }
-
-      // Add a delay between requests (e.g., 1 second)
-      await new Promise(resolve => setTimeout(resolve, 1000));
-    } catch (error) {
-      console.error('Error:', error.message);
     }
-  }
-
-  // Save results to a file
-  try {
-    //fs.writeFileSync("../client/data.json", JSON.stringify(results, null, 2));
-    console.log("Data saved.");
+    console.log("Items to be added in DB: ", results)
+    return results;
   } catch (error) {
-    console.error('Error saving data to file:', error.message);
+    console.error('Error in fetchData:', error.message);
   }
-
-  return results;
 }
-
-fetchData();
