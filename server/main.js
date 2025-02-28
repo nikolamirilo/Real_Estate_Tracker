@@ -4,7 +4,7 @@ import { findBestMatch, getRandomOffset } from "./utils/index.js";
 //import fs from "fs";
 
 
-export async function fetch4ZidaOffers() {
+export async function fetchData() {
   const offers4zida = await scrape4zidaOffers();
 
   if (offers4zida.length === 0) {
