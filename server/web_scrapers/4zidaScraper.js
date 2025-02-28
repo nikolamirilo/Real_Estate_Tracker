@@ -42,5 +42,3 @@ export async function scrape4zidaOffers() {
         console.error('Error scraping data:', error);
     }
 }
-
-scrape4zidaOffers()
