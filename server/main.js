@@ -1,26 +1,22 @@
 import axios from "axios";
 import { scrape4zidaOffers } from "./web_scrapers/4zidaScraper.js";
 import { findBestMatch, getRandomOffset } from "./utils/index.js";
-import { scrapeHaloOffers } from "./web_scrapers/haloScraper.js";
 //import fs from "fs";
 
-export async function fetchData() {
-  const offersHalo = await scrapeHaloOffers();
+
+export async function fetch4ZidaOffers() {
   const offers4zida = await scrape4zidaOffers();
 
-  const flattened4ZidaOffers = Array.isArray(offers4zida) ? offers4zida.flat() : [];
-  const allOffers = [...offersHalo, ...flattened4ZidaOffers];
-
-  if (allOffers.length === 0) {
+  if (offers4zida.length === 0) {
     console.log("No offers to process.");
     return [];
   }
 
   const results = [];
 
-  for (let i = 0; i < allOffers.length; i++) {
+  for (let i = 0; i < offers4zida.length; i++) {
     try {
-      const item = allOffers[i];
+      const item = offers4zida[i];
       console.log(item);
 
       if ((item.street || item.cityArea) && item.cityArea) {

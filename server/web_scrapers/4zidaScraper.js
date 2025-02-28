@@ -6,8 +6,8 @@ import * as cheerio from 'cheerio';
 export async function scrape4zidaOffers() {
     try {
         const results = [];
-        for(let i = 1; i < 20; i++){
-            const url = `https://www.4zida.rs/prodaja-stanova/surcin-opstina-beograd/trosoban/do-150000-evra?struktura=dvoiposoban&strana=${i}`;
+        for(let i = 1; i < 100; i++){
+            const url = `https://www.4zida.rs/prodaja-stanova/surcin-opstina-beograd/dvoiposoban/do-200000-evra?mesto=novi-beograd-beograd&mesto=zemun-opstina-beograd&mesto=cukarica-opstina-beograd&struktura=trosoban&struktura=troiposoban&struktura=cetvorosoban&struktura=cetvoroiposoban-i-vise&vece_od=50m2&stanje=u_izgradnji&stanje=novo&strana=${i}`;
             const { data } = await axios.get(url);
             const $ = cheerio.load(data);
             $('div[class*="flex h-[180px]"]').each((i, element) => {
@@ -42,3 +42,5 @@ export async function scrape4zidaOffers() {
         console.error('Error scraping data:', error);
     }
 }
+
+scrape4zidaOffers()
