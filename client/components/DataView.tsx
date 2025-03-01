@@ -29,7 +29,7 @@ export default function DataView({data}:{data:Offer[]}) {
         ))}
       </div>
       <div className="lg:p-4 bg-white border rounded-lg shadow mt-2">
-        {activeTab == "map"? <MapView data={filteredItems} setSelected={setSelected} selected={selected} initialOffer={data[0]}/> : <ListView data={filteredItems}/>}
+        {activeTab == "map"? <MapView data={filteredItems} setSelected={setSelected} selected={selected}/> : <ListView data={filteredItems}/>}
       </div>
     </div>
     </div>

@@ -20,7 +20,7 @@ export type Offer = {
 
 
 
-function MapView({data, selected, setSelected, initialOffer}: {data:Offer[], setSelected:any, selected:any, initialOffer:any}) {
+function MapView({data, selected, setSelected}: {data:Offer[], setSelected:any, selected:any}) {
   return (
     <div className="w-full z-10">
     <Map height={800} defaultCenter={[44.780000, 20.3500000]} defaultZoom={12}>
@@ -47,12 +47,6 @@ function MapView({data, selected, setSelected, initialOffer}: {data:Offer[], set
             <p className="text-black text-sm">{selected.details}</p>
             <p className="text-black text-sm">{formatCurrency(selected.price)}</p>
             <p className="text-black text-sm">{formatCurrency(selected.price_per_m2)}</p>
-            <button
-              onClick={() => setSelected()}
-              className="absolute top-1 right-2 text-red-500"
-            >
-              X
-            </button>
           </div>
         </Overlay>
       )}
