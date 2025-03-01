@@ -3,11 +3,10 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import { createPropertiesTable } from './sql/queries.js';
 import { fetchData } from './main.js';
 import { sendMessageToDiscord } from './lib/discordBot.js';
 import { updateCoordinatesAI } from './ai/index.js';
-import { pool } from './lib/db.js';
+import pool from './lib/db.js';
 
 dotenv.config();
 

@@ -1,6 +1,6 @@
 import Groq from "groq-sdk";
 import dotenv from 'dotenv';
-import { updateProperty } from "../sql/queries";
+import { updateProperty } from "../sql/queries.js";
 
 dotenv.config();
 
