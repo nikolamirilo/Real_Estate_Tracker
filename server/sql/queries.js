@@ -63,7 +63,7 @@ export async function updateProperty(property) {
             city_area,
             price,
             price_per_m2,
-            is_match,
+            true,
             lat,
             lon,
             link,
