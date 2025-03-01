@@ -1,4 +1,4 @@
-import pool from "../lib/db";
+import pool from "../lib/db.js";
 
 export const createPropertiesTable = `
 CREATE TABLE IF NOT EXISTS properties (

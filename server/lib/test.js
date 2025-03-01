@@ -1,6 +1,5 @@
 // index.js
 import { sendMessageToDiscord } from './discordBot.js';
-import Parse from 'parse/node.js';
 
 // Example message content
 const messageContent =   {

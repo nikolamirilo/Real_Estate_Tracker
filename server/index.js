@@ -3,11 +3,12 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import pool from './lib/db.js';
 import { createPropertiesTable } from './sql/queries.js';
 import { fetchData } from './main.js';
 import { sendMessageToDiscord } from './lib/discordBot.js';
 import { updateCoordinatesAI } from './ai/index.js';
+import { pool } from './lib/db.js';
+
 dotenv.config();
 
 const app = express();
@@ -105,7 +106,7 @@ app.use((err, req, res, next) => {
     res.status(500).json({ message: 'Internal Server Error' });
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = 5000;
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
