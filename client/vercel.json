@@ -5,16 +5,8 @@
         "schedule": "0 9 * * *"
       },
       {
-        "path": "/api/trigger-properties",
-        "schedule": "0 18 * * *"
-      },
-      {
         "path": "/api/trigger-coordinates",
         "schedule": "0 10 * * *"
-      },
-      {
-        "path": "/api/trigger-coordinates",
-        "schedule": "0 19 * * *"
       }
     ]
   }
