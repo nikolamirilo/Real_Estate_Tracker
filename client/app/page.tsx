@@ -1,8 +1,8 @@
 import DataView from "@/components/DataView";
 import { FaRegSadCry } from "react-icons/fa";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 60;
+
+export const revalidate = 43200 
 
 export default async function Page() {
   try {
