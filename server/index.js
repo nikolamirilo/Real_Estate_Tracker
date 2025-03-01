@@ -78,7 +78,7 @@ app.get('/properties/refresh-data', async (req, res) => {
     }
 });
 
-app.post('/properties/update-coordinates', async (req, res) => {
+app.get('/properties/update-coordinates', async (req, res) => {
     try {
         const { rows } = await pool.query('SELECT * FROM properties');
 
