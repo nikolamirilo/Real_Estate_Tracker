@@ -14,9 +14,9 @@ export default function DataView({data}:{data:Offer[]}) {
   const [selected, setSelected] = useState<Offer>(data[0]);
   const [filteredItems, setFilteredItems] = useState<Offer[]>(data);
   return (
-    <>
+    <div className="flex flex-col lg:flex-row">
     <Sidebar item={selected} setFilteredItems={setFilteredItems} filteredItems={filteredItems} />
-    <div className="w-[68%] fixed right-0 top-0">
+    <div className="lg:w-[68%] w-full lg:fixed lg:right-0 lg:top-0">
       <div className="flex border-b z-50">
         {tabs.map((tab) => (
           <button
@@ -28,10 +28,10 @@ export default function DataView({data}:{data:Offer[]}) {
           </button>
         ))}
       </div>
-      <div className="p-4 bg-white border rounded-lg shadow mt-2">
-        {activeTab == "map"? <MapView data={filteredItems} setSelected={setSelected}/> : <ListView data={filteredItems}/>}
+      <div className="lg:p-4 bg-white border rounded-lg shadow mt-2">
+        {activeTab == "map"? <MapView data={filteredItems} setSelected={setSelected} selected={selected} initialOffer={data[0]}/> : <ListView data={filteredItems}/>}
       </div>
     </div>
-    </>
+    </div>
   );
 }

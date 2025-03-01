@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Offer } from './MapView';
 import Image from 'next/image';
+import { formatCurrency } from '@/helpers/client';
 
 const ListView = ({ data }: { data: Offer[] }) => {
     const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -15,7 +16,7 @@ const ListView = ({ data }: { data: Offer[] }) => {
                             key={i}
                             onMouseEnter={() => setHoveredIndex(i)}
                             onMouseLeave={() => setHoveredIndex(null)}
-                            className={`p-2 cursor-pointer flex-col md:flex-row relative flex h-[180px] overflow-clip rounded bg-white shadow-smooth shadow-xl`}
+                            className={`p-2 cursor-pointer flex-col md:flex-row relative flex h-[350px] lg:h-[180px] overflow-clip rounded bg-white shadow-smooth shadow-xl`}
                         >
                             {/* Overlay covering the entire card */}
                             {hoveredIndex === i && (
@@ -33,7 +34,7 @@ const ListView = ({ data }: { data: Offer[] }) => {
                             )}
 
                             {/* Image */}
-                            <div className="w-full md:w-1/2 h-full relative">
+                            <div className="w-full lg:w-1/2 lg:h-full h-48 relative">
                                 <Image
                                     src={item.image}
                                     alt={item.street}
@@ -50,10 +51,10 @@ const ListView = ({ data }: { data: Offer[] }) => {
                                 <p className="text-gray-700 text-sm">{item.city_area}</p>
                                 <p className="text-gray-500 text-sm">{item.details}</p>
                                 <p className="font-bold text-md mt-2">
-                                    Ukupna cena: {new Intl.NumberFormat("sr-RS", { style: "currency", currency: "EUR", minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(Number(item.price))}
+                                    Ukupna cena: {formatCurrency(item.price)}
                                 </p>
                                 <p className="text-sm">
-                                    Cena po kvadratu: {new Intl.NumberFormat("sr-RS", { style: "currency", currency: "EUR", minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(Number(item.price_per_m2))}
+                                    Cena po kvadratu: {formatCurrency(item.price_per_m2)}
                                 </p>
                             </div>
                         </div>

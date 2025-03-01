@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Map, Marker, Overlay } from "pigeon-maps";
 import dynamic from "next/dynamic";
+import { formatCurrency } from "@/helpers/client";
 
 export type Offer = {
   details: string;
@@ -19,7 +20,7 @@ export type Offer = {
 
 
 
-function MapView({data, setSelected}: {data:Offer[], setSelected:any}) {
+function MapView({data, selected, setSelected, initialOffer}: {data:Offer[], setSelected:any, selected:any, initialOffer:any}) {
   return (
     <div className="w-full z-10">
     <Map height={800} defaultCenter={[44.780000, 20.3500000]} defaultZoom={12}>
@@ -33,7 +34,6 @@ function MapView({data, setSelected}: {data:Offer[], setSelected:any}) {
           onClick={() => setSelected(item)}
         />
       )})}
-{/* 
       {selected.lat !== 0 && selected.lon !== 0 && (
         <Overlay anchor={[Number(selected.lat), Number(selected.lon)]} offset={[90, 200]}>
           <div
@@ -45,17 +45,17 @@ function MapView({data, setSelected}: {data:Offer[], setSelected:any}) {
             </strong>
             <p className="text-black text-sm">{selected.city_area}</p>
             <p className="text-black text-sm">{selected.details}</p>
-            <p className="text-black text-sm">{selected.price}</p>
-            <p className="text-black text-sm">{selected.price_per_m2}</p>
+            <p className="text-black text-sm">{formatCurrency(selected.price)}</p>
+            <p className="text-black text-sm">{formatCurrency(selected.price_per_m2)}</p>
             <button
-              onClick={() => setSelected(initialOfferState)}
+              onClick={() => setSelected()}
               className="absolute top-1 right-2 text-red-500"
             >
               X
             </button>
           </div>
         </Overlay>
-      )} */}
+      )}
     </Map>
     </div>
   );

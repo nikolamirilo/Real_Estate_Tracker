@@ -2,12 +2,13 @@ import React from 'react';
 import { Offer } from './MapView';
 import Image from 'next/image';
 import Filter from './Filter';
+import { formatCurrency } from '@/helpers/client';
 
 export const dynamic = "force-dynamic";
 
 const Sidebar = ({ item, setFilteredItems, filteredItems }: { item: Offer, setFilteredItems: any, filteredItems: Offer[] }) => {
   return (
-    <div className="z-50 h-screen overflow-y-auto fixed top-0 left-0 flex flex-col w-[30%] min-w-[200px] bg-gradient-to-br from-gray-50 to-gray-100 text-gray-700 max-w-[30rem] p-4 shadow-2xl shadow-blue-gray-900/10">
+    <div className="z-50 lg:h-screen overflow-y-auto lg:fixed lg:top-0 lg:left-0 flex flex-col lg:w-[30%] lg:min-w-[200px] bg-gradient-to-br from-gray-50 to-gray-100 text-gray-700 lg:max-w-[30rem] p-4 lg:shadow-2xl lg:shadow-blue-gray-900/10">
       {/* Custom Scrollbar Styling */}
       <style jsx>{`
         .sidebar::-webkit-scrollbar {
@@ -28,7 +29,7 @@ const Sidebar = ({ item, setFilteredItems, filteredItems }: { item: Offer, setFi
 
       <div className="sidebar flex flex-col gap-2 min-w-[200px] font-sans text-base font-normal text-gray-700">
         {/* Item Card */}
-        <div className={`p-2 border border-gray-200 rounded-lg w-full flex flex-col shadow-sm bg-white hover:shadow-md transition-shadow duration-300`}>
+        <div className={`hidden lg:flex p-2 border border-gray-200 rounded-lg w-full flex-col shadow-sm bg-white hover:shadow-md transition-shadow duration-300`}>
           <div 
             className="w-full h-56 relative cursor-pointer rounded-lg overflow-hidden"
             onClick={() => window.open(item.link, "_blank")}
@@ -50,21 +51,11 @@ const Sidebar = ({ item, setFilteredItems, filteredItems }: { item: Offer, setFi
           <p className="text-gray-500 text-sm mt-1">{item.details}</p>
           <p className="font-bold text-md mt-2">
             Ukupna cena:{" "}
-            {new Intl.NumberFormat("sr-RS", {
-              style: "currency",
-              currency: "EUR",
-              minimumFractionDigits: 0,
-              maximumFractionDigits: 0,
-            }).format(Number(item.price))}
+            {formatCurrency(item.price)}
           </p>
           <p className="text-sm mt-1">
             Cena po kvadratu:{" "}
-            {new Intl.NumberFormat("sr-RS", {
-              style: "currency",
-              currency: "EUR",
-              minimumFractionDigits: 0,
-              maximumFractionDigits: 0,
-            }).format(Number(item.price_per_m2))}
+            {formatCurrency(item.price_per_m2)}
           </p>
           {item.is_match === false && (
             <span className="text-sm text-blue-500 mt-2">

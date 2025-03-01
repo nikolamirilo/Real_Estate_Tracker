@@ -38,9 +38,9 @@ export async function sendMessageToDiscord(offer) {
         if (!channel) {
             throw new Error("Channel not found!");
         }
-
-        console.log("Channel found:", channel.name);
+        const today = new Date().toLocaleDateString('sr-RS');
         const messageContent = `
+**📅 Datum:** ${today}        
 **🏠 NOVA NEKRETNINA U SURČINU!**
 **📍 Ulica:** ${offer.street}
 **🏙️ Opština:** ${offer.cityArea}
