@@ -7,6 +7,7 @@ import { fetchData } from './main.js';
 import { sendMessageToDiscord } from './lib/discordBot.js';
 import { updateCoordinatesAI } from './ai/index.js';
 import pool from './lib/db.js';
+import { createPropertiesTable } from './sql/queries.js';
 
 dotenv.config();
 
