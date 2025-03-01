@@ -14,7 +14,6 @@ export async function fetchData() {
     const results = [];
     const { rows } = await pool.query('SELECT * FROM properties');
     const existingRecords = rows;
-
     for (let i = 0; i < offers4zida.length; i++) {
       try {
         const item = offers4zida[i];

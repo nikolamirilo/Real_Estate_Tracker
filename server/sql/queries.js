@@ -1,3 +1,5 @@
+import pool from "../lib/db";
+
 export const createPropertiesTable = `
 CREATE TABLE IF NOT EXISTS properties (
     id SERIAL PRIMARY KEY, -- Auto-incrementing primary key
@@ -15,3 +17,66 @@ CREATE TABLE IF NOT EXISTS properties (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP -- Timestamp of last update
 );
 `;
+
+export async function updateProperty(property) {
+    try {
+        const {
+            id,
+            details,
+            street,
+            image,
+            city_area,
+            price,
+            price_per_m2,
+            is_match,
+            lat,
+            lon,
+            link,
+        } = property;
+
+        if (!id) {
+            throw new Error("Property ID is required for updating.");
+        }
+
+        const query = `
+        UPDATE properties
+        SET
+          details = $1,
+          street = $2,
+          image = $3,
+          city_area = $4,
+          price = $5,
+          price_per_m2 = $6,
+          is_match = $7,
+          lat = $8,
+          lon = $9,
+          link = $10,
+          updated_at = CURRENT_TIMESTAMP
+        WHERE id = $11
+        RETURNING *;
+      `;
+
+        const values = [
+            details,
+            street,
+            image,
+            city_area,
+            price,
+            price_per_m2,
+            is_match,
+            lat,
+            lon,
+            link,
+            id,
+        ];
+        try {
+            await pool.query(query, values);
+            return true;
+        } catch (error) {
+            return false;
+        }
+    } catch (error) {
+        console.error("Error updating property:", error);
+        throw false;
+    }
+}

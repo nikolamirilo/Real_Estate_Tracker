@@ -3,10 +3,11 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import pool from './lib/db.js'; // Import the database connection
+import pool from './lib/db.js';
 import { createPropertiesTable } from './sql/queries.js';
 import { fetchData } from './main.js';
 import { sendMessageToDiscord } from './lib/discordBot.js';
+import { updateCoordinatesAI } from './ai/index.js';
 dotenv.config();
 
 const app = express();
@@ -74,6 +75,23 @@ app.get('/properties/refresh-data', async (req, res) => {
     } catch (err) {
         console.error('Error in /properties/refresh-data:', err);
         res.status(500).json({ message: "Internal Server Error", error: err.message, success: false });
+    }
+});
+
+app.post('/properties/update-coordinates', async (req, res) => {
+    try {
+        const { rows } = await pool.query('SELECT * FROM properties');
+
+        if (rows.length === 0) {
+            return res.status(404).json({ message: "No properties found in the database." });
+        }
+
+        await updateCoordinatesAI(rows);
+
+        res.status(200).json({ message: "Coordinates updated successfully." });
+    } catch (error) {
+        console.error("Error in /update-coordinates route:", error);
+        res.status(500).json({ message: "An error occurred while updating coordinates.", error: error.message });
     }
 });
 

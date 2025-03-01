@@ -109,3 +109,6 @@ export function getRandomOffset() {
 
   return { deltaLat: deltaLat * (180 / Math.PI), deltaLon: deltaLon * (180 / Math.PI) };
 }
+
+
+
