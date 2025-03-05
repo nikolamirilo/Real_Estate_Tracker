@@ -7,7 +7,7 @@ export async function scrape4zidaOffers() {
     try {
         const results = [];
         for(let i = 1; i < 100; i++){
-            const url = `https://www.4zida.rs/prodaja-stanova/surcin-opstina-beograd/dvoiposoban/do-200000-evra?mesto=novi-beograd-beograd&mesto=zemun-opstina-beograd&mesto=cukarica-opstina-beograd&struktura=trosoban&struktura=troiposoban&struktura=cetvorosoban&struktura=cetvoroiposoban-i-vise&vece_od=50m2&stanje=u_izgradnji&stanje=novo&strana=${i}`;
+            const url = `https://www.4zida.rs/prodaja-stanova/surcin-surcin-opstina-beograd/dvoiposoban/do-150000-evra?mesto=ledine-surcin-opstina-beograd&mesto=zemun-zemun-opstina-beograd&mesto=banovo-brdo-cukarica-cukarica-opstina-beograd&mesto=vidikovac-rakovica-opstina-beograd&mesto=stari-kosutnjak-rakovica-opstina-beograd&mesto=kosutnjak-cukarica-cukarica-opstina-beograd&mesto=novi-beograd-beograd&struktura=trosoban&struktura=troiposoban&struktura=cetvorosoban&struktura=cetvoroiposoban-i-vise&vece_od=50m2&odrednica=278&stanje=u_izgradnji&stanje=novo&strana=${i}`;
             const { data } = await axios.get(url);
             const $ = cheerio.load(data);
             $('div[class*="flex h-[180px]"]').each((i, element) => {
