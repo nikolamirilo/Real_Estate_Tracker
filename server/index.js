@@ -34,6 +34,8 @@ app.get('/properties/refresh-data', async (req, res) => {
         await pool.query(createPropertiesTable);
         const data = await fetchData();
         let messages = [];
+        let counter = 0
+
         if (data.length > 0) {
             for (let i = 0; i < data.length; i++) {
                 const checkQuery = `SELECT * FROM properties WHERE link = $1`;
@@ -64,13 +66,17 @@ app.get('/properties/refresh-data', async (req, res) => {
 
                 try {
                     await pool.query(insertQuery, insertValues);
-                    await sendMessageToDiscord(data[i]);
+                    await sendMessageToDiscord(data[i], "offer");
+                    counter++;
                     messages.push(`Property ${i + 1} inserted successfully.`);
                 } catch (err) {
                     messages.push(`Error inserting property ${i + 1}: ${err.message}`);
                 }
+                
             }
-
+            if(counter == 0){
+                await sendMessageToDiscord(data[i], "notification");
+            }
             res.json({ message: "Finished adding data", details: messages, success: true });
         }
     } catch (err) {

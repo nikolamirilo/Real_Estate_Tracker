@@ -21,7 +21,7 @@ client.login(DISCORD_BOT_TOKEN).catch((error) => {
     console.error("Error logging in:", error);
 });
 
-export async function sendMessageToDiscord(offer) {
+export async function sendMessageToDiscord(input, type) {
     try {
         if (!DISCORD_BOT_TOKEN || !DISCORD_CHANNEL_ID) {
             throw new Error("Discord bot token or channel ID is missing. Check your environment variables.");
@@ -39,15 +39,22 @@ export async function sendMessageToDiscord(offer) {
             throw new Error("Channel not found!");
         }
         const today = new Date().toLocaleDateString('sr-RS');
-        const messageContent = `
+        let messageContent = ""
+        if(type == "offer"){
+        messageContent = `
 **📅 Datum:** ${today}        
-**🏠 NOVA NEKRETNINA U SURČINU!**
-**📍 Ulica:** ${offer.street}
-**🏙️ Opština:** ${offer.cityArea}
-**💰 Cena:** ${offer.price} (${offer.pricePerM2}/m²)
-**📝 Detalji:** ${offer.details}
-**🔗 Link:** [Klikni ovde](${offer.link})
+**🏠 NOVA NEKRETNINA U PONUDI!**
+**📍 Ulica:** ${input.street}
+**🏙️ Opština:** ${input.cityArea}
+**💰 Cena:** ${input.price} (${input.pricePerM2}/m²)
+**📝 Detalji:** ${input.details}
+**🔗 Link:** [Klikni ovde](${input.link})
 `;
+        }else{
+            messageContent = `
+**📅 Datum:** ${today}        
+**🏠 NEMA NOVIH NEKRETNINA U PONUDI TRENUTNO!`
+        }
         await channel.send(messageContent);
         console.log("Message sent successfully!");
     } catch (error) {
