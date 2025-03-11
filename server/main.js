@@ -22,9 +22,7 @@ export async function fetchData() {
           const url = `https://nominatim.openstreetmap.org/search.php?street=${encodedAddress}&city=Beograd&country=Serbia&state=Serbia&format=jsonv2`;
 
           console.log(`Fetching: ${url}`);
-          const res = await axios.get(url, {
-            headers: { 'User-Agent': 'YourAppName (contact@email.com)' }
-          });
+          const res = await axios.get(url);
 
           if (res.data?.length > 0) {
             const trimmedCityArea = item.cityArea.split(",")[0].trim();
