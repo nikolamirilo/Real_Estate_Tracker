@@ -6,7 +6,7 @@ import * as cheerio from 'cheerio';
 export async function scrape4zidaOffers() {
     try {
         const results = [];
-        for(let i = 1; i < 100; i++){
+        for (let i = 1; i < 100; i++) {
             const url = `https://www.4zida.rs/prodaja-stanova/surcin-surcin-opstina-beograd/dvoiposoban/do-150000-evra?mesto=ledine-surcin-opstina-beograd&mesto=zemun-zemun-opstina-beograd&mesto=banovo-brdo-cukarica-cukarica-opstina-beograd&mesto=vidikovac-rakovica-opstina-beograd&mesto=stari-kosutnjak-rakovica-opstina-beograd&mesto=kosutnjak-cukarica-cukarica-opstina-beograd&mesto=novi-beograd-beograd&struktura=trosoban&struktura=troiposoban&struktura=cetvorosoban&struktura=cetvoroiposoban-i-vise&vece_od=50m2&odrednica=278&stanje=u_izgradnji&stanje=novo&strana=${i}`;
             const { data } = await axios.get(url);
             const $ = cheerio.load(data);
@@ -16,25 +16,25 @@ export async function scrape4zidaOffers() {
                     .text()
                     .trim();
                 const street = $(element)
-                .find('p[class*="truncate"][class*="font-medium"][class*="leading-tight"][class*="desk:text-lg"]')
-                .text()
-                .trim();
+                    .find('p[class*="truncate"][class*="font-medium"][class*="leading-tight"][class*="desk:text-lg"]')
+                    .text()
+                    .trim();
                 const cityArea = $(element).find('p:contains("Beograd")').text().trim();
                 const titleSection = $(element).find('p:contains("m²")').parent();
                 const price = titleSection.find('p:first-child').text().trim();
                 const link = $(element).find('div.relative.w-1\\/3.min-w-\\[125px\\].flex-shrink-0 a:first-child').attr('href');
                 const pricePerM2 = titleSection.find('p:last-child').text().trim();
                 const image = $('div.relative.size-full.bg-black\\/50 img').attr('srcset');
-                if (details == "") return
-                results.push({
-                    details: details.split('\n')[0].trim(),
-                    street,
-                    link: `https://www.4zida.rs${link}`,
-                    cityArea,
-                    price:parseInt(price.replace(/[^0-9]/g, ''), 10),
-                    pricePerM2:parseInt(pricePerM2.replace(/[^0-9]/g, ''), 10),
-                    image: image.split(',').at(1)
-                });
+                if (details != "" && image)
+                    results.push({
+                        details: details,
+                        street,
+                        link: `https://www.4zida.rs${link}`,
+                        cityArea,
+                        price: parseInt(price.replace(/[^0-9]/g, ''), 10),
+                        pricePerM2: parseInt(pricePerM2.replace(/[^0-9]/g, ''), 10),
+                        image: image.includes(",") ? image.split(',').at(1) : image
+                    });
             });
         }
         return results;

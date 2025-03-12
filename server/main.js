@@ -59,3 +59,5 @@ export async function fetchData() {
     console.error('Error in fetchData:', error.message);
   }
 }
+
+fetchData()
